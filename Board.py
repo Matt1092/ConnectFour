@@ -57,7 +57,7 @@ class Board:
     def placeToken(self, col, token):
 
         #Invalid move, row is out of range (0..6) or the cell was not empty
-        if not (0 <= col < self.cols):
+        if col < 0 or col >= self.getCols():
             return False
         
         #Find the closest empty cell to the bottom in the specified column
@@ -115,10 +115,10 @@ class Board:
     def checkAcross(self, row):
         for col in range(self.getCols() - 2):
             #Remember to check if the row beneath the empty cell is either an X or an O (otherwise, this blocking strategy would be pointless)
-            if (((self.board[row][col] == 'X') and (self.board[row][col + 1] == 'X') and (self.board[row][col + 2] == ' ') and (self.board[row - 1][col + 2] == 'X' or self.board[row - 1][col + 2] == 'O'))):
+            if self.board[row][col] == 'X' and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col + 2] == 'X' or self.board[row + 1][col + 2] == 'O')):
                 return col + 2
             #Same checking as above
-            elif (((self.board[row][col] == ' ') and (self.board[row - 1][col] == 'X' or self.board[row - 1][col] == 'O') and (self.board[row][col + 1] == 'X') and (self.board[row][col + 2] == 'X'))):
+            elif self.board[row][col] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col] == 'X' or self.board[row + 1][col] == 'O')) and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X':
                 return col
         return -1
 
@@ -126,10 +126,10 @@ class Board:
     #This method checks if there are 2 'X' characters in a row or 3, vertically on the board.
     def checkVertical(self, col):
         for row in range(self.getRows() - 3):
-            if (((self.board[row][col] == 'X') and (self.board[row+1][col] == 'X') and (self.board[row + 2][col] == 'X') and (self.board[row + 3][col] == ' '))):
+            if (((self.board[row + 3][col] == 'X') and (self.board[row + 2][col] == 'X') and (self.board[row + 1][col] == 'X') and (self.board[row][col] == ' '))):
                 return True
         for row in range(self.getRows() - 2):
-            if (((self.board[row][col] == 'X') and (self.board[row+1][col] == 'X') and (self.board[row + 2][col] == ' '))):
+            if (((self.board[row + 2][col] == 'X') and (self.board[row + 1][col] == 'X') and (self.board[row][col] == ' '))):
                 return True
         return False
     
@@ -139,20 +139,17 @@ class Board:
         #Check for strategic horizontal blocks
         for row in range(self.getRows()):
             if self.checkAcross(row) != -1:
-                print(self.checkAcross(row))
                 return self.checkAcross(row)
         
         #Check for strategic vertical blocks
         for col in range(self.getCols()):
             if self.checkVertical(col):
-                print(self.checkVertical(col))
                 return col
 
         #Make random move otherwise (ensuring cell is empty)
         for row in range(self.getRows() - 1, -1, -1):
             for col in range(self.getCols()):
                 if self.board[row][col] == ' ':
-                    print("empty")
                     return col
 
 

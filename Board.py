@@ -3,7 +3,9 @@
 #author Matthew Moga
 #version December 14, 2022
 
+
 import random
+
 
 class Board:
     def __init__(self):
@@ -15,6 +17,7 @@ class Board:
         #Design Decision: I will represent the Board using an array of char(acters) rather than Strings.
         #Since char is a primitive data type it uses less memory and we can use == for comparisons.
         self.board = [[' ' for x in range(self.cols)] for x in range(self.rows)]
+
 
     #This accessor returns the number of rows on the board.
     def getRows(self):
@@ -120,22 +123,88 @@ class Board:
             #Same checking as above
             elif self.board[row][col] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col] == 'X' or self.board[row + 1][col] == 'O')) and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X':
                 return col
+            #Also check if there are simply 2 horizontal X's at the bottom of the board (no need for checking beneath this row as it is the bottom)
+            elif self.board[row][col] == 'X' and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == ' ':
+                return col + 2
+            #Same checking as above but for an empty cell on the leftmost side of the 2 horizontal X's
+            elif self.board[row][col] == ' ' and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X':
+                return col
         return -1
 
-    
-    #This method checks if there are 2 'X' characters in a row or 3, vertically on the board.
+
     def checkVertical(self, col):
-        for row in range(self.getRows() - 3):
-            if (((self.board[row + 3][col] == 'X') and (self.board[row + 2][col] == 'X') and (self.board[row + 1][col] == 'X') and (self.board[row][col] == ' '))):
-                return True
         for row in range(self.getRows() - 2):
             if (((self.board[row + 2][col] == 'X') and (self.board[row + 1][col] == 'X') and (self.board[row][col] == ' '))):
+              return True
+        return False
+
+    
+    #This method checks if there are 3 'X' characters in a row or 2, vertically on the board.
+    def blockVertical(self, col):
+        for row in range(self.getRows() - 3):
+            if (((self.board[row + 3][col] == 'X') and (self.board[row + 2][col] == 'X') and (self.board[row + 1][col] == 'X') and (self.board[row][col] == ' '))):
                 return True
         return False
     
 
+    def blockAcross(self, row):
+        for col in range(self.getCols() - 3):
+            #Check row beneath empty cell after 3 consecutive X's just to verify that a token can be placed for win block
+            if self.board[row][col] == 'X' and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X' and self.board[row][col + 3] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col + 3] == 'X' or self.board[row + 1][col + 3] == 'O')):
+                return col + 3
+            elif self.board[row][col] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col] == 'X' or self.board[row + 1][col] == 'O')) and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X' and self.board[row][col + 3] == 'X':
+                return col
+            #Check for horizontal block on bottom row (disregarding anything beneath this row as it is the bottommost row)
+            elif self.board[row][col] == 'X' and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X' and self.board[row][col + 3] == ' ':
+                return col
+            elif self.board[row][col] == ' ' and self.board[row][col + 1] == 'X' and self.board[row][col + 2] == 'X' and self.board[row][col + 3] == 'X':
+                return col
+        return -1
+    
+
+    def checkWinAcross(self, row):
+        for col in range(self.getCols() - 3):
+            #Check row beneath empty cell after 3 consecutive O's just to verify that a token can be placed for computer win
+            if self.board[row][col] == 'O' and self.board[row][col + 1] == 'O' and self.board[row][col + 2] == 'O' and self.board[row][col + 3] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col + 3] == 'X' or self.board[row + 1][col + 3] == 'O')):
+                return col + 3
+            elif self.board[row][col] == ' ' and ((row + 1 < self.getRows()) and (self.board[row + 1][col] == 'X' or self.board[row + 1][col] == 'O')) and self.board[row][col + 1] == 'O' and self.board[row][col + 2] == 'O' and self.board[row][col + 3] == 'O':
+                return col
+            #Check for horizontal win on bottom row (disregarding anything beneath this row as it is the bottommost row)
+            elif self.board[row][col] == 'O' and self.board[row][col + 1] == 'O' and self.board[row][col + 2] == 'O' and self.board[row][col + 3] == ' ':
+                return col
+            elif self.board[row][col] == ' ' and self.board[row][col + 1] == 'O' and self.board[row][col + 2] == 'O' and self.board[row][col + 3] == 'O':
+                return col
+        return -1
+    
+    
+    def checkWinVertical(self, col):
+        for row in range(self.getRows() - 3):
+            if (((self.board[row + 3][col] == 'O') and (self.board[row + 2][col] == 'O') and (self.board[row + 1][col] == 'O') and (self.board[row][col] == ' '))):
+                return True
+        return False
+
+    
     #This method checks if there is a singular 'O' character, horizontally on the board.
     def computerAttack(self):
+
+        #Check for potential horizontal winning move
+        for row in range(self.getRows()):
+            if self.checkWinAcross(row) != -1:
+                return self.checkWinAcross(row)
+        
+        #Check for potential vertical winning move
+        for col in range(self.getCols()):
+            if self.checkWinVertical(col):
+                return col
+        
+        #Check for win stopping blocks (horizontal and vertical)
+        for row in range(self.getRows()):
+            if self.blockAcross(row) != -1:
+                return self.blockAcross(row)
+        for col in range(self.getCols()):
+            if self.blockVertical(col):
+                return col
+
         #Check for strategic horizontal blocks
         for row in range(self.getRows()):
             if self.checkAcross(row) != -1:
@@ -151,7 +220,6 @@ class Board:
             for col in range(self.getCols()):
                 if self.board[row][col] == ' ':
                     return col
-
 
 
     #Standard toString method.

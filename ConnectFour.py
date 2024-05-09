@@ -16,19 +16,27 @@ from Board import Board
 
 class ConnectFour:
     """
-    This function initializes all the instance variables (no instance variables).
+    A class representing the mainline logic of our Connect-Four game.
+
+    Attributes:
+        connectFourBoard (char array): The board that will be used for the in game moves.
+        playGame (bool): Boolean variable used to determine status of game.
+        gameLoop (bool): Boolean variable used to determine whether program keeps running or not.
     """
     def __init__(self):
+        """
+        This function initializes all the instance variables (no instance variables).
+        """
         pass
-    
 
 
 
-    """
-    This function defines the mainline logic for our game loop. It uses various helper methods to run the game.
-    """
+
     @staticmethod
     def main():
+        """
+        This function defines the mainline logic for our game loop. It uses various helper methods to run the game.
+        """
         #Instantiate board
         connectFourBoard = Board()
         print("\nWelcome to Connect-Four!\n")
@@ -88,14 +96,14 @@ class ConnectFour:
 
 
 
-    """
-    This function prompts the user for a move. When this function exits, an 'X' will be placed on the board in a valid (empty) cell.
-
-    Args:
-        connectFourBoard (char array): Board that is used to place 'X' token on
-    """
     @staticmethod
     def makeUserMove(connectFourBoard):
+        """
+        This function prompts the user for a move. When this function exits, an 'X' will be placed on the board in a valid (empty) cell.
+
+        Args:
+            connectFourBoard (char array): Board that is used to place 'X' token on.
+        """
         validMove = False
             
         #Prompt for a row and column with input validation
@@ -106,17 +114,17 @@ class ConnectFour:
             if not validMove:
                 print("Sorry, that location is not available to place an 'X'.\n")
         
-    
 
 
-    """
-    This method generates a computer move with the use of CPU education and advanced machine learning. When this method exits, an 'O' will be placed on the board in a valid (empty) cell.
 
-    Args:
-        connectFourBoard (char array): Board that is used to place 'O' token on
-    """
     @staticmethod
     def makeComputerMove(connectFourBoard):
+        """
+        This method generates a computer move with the use of CPU education and advanced machine learning. When this method exits, an 'O' will be placed on the board in a valid (empty) cell.
+
+        Args:
+            connectFourBoard (char array): Board that is used to place 'O' token on.
+        """
         validMove = False
         col = -1                
             
@@ -127,11 +135,12 @@ class ConnectFour:
         
 
 
-    """
-    This function prompts the user if they would like to play again with some input validation.
-    """
+
     @staticmethod
     def askPlayAgain():
+        """
+        This function prompts the user if they would like to play again with some input validation.
+        """
         playAgain = input("Play again? [y/n]: ")
         while (not playAgain == ("y") and not playAgain == ("yes") and not playAgain == ("n") and not playAgain == ("no")):
             playAgain = input("Play again? [y/n]: \n")

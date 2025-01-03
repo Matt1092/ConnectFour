@@ -21,7 +21,7 @@ This is a Python implementation of the classic Connect Four game. Users can play
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/Matt1092/ConnectFour.git
-    cd connect-four
+    cd ConnectFour
     ```
 
 2. **Run the game**:

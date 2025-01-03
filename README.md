@@ -48,3 +48,66 @@ This is a Python implementation of the classic Connect Four game. Users can play
 ## Example
 
 Here is an example interaction with the game:
+```text
+Welcome to Connect-Four!
+
+What is your name? Matt
+You ready for a challenge, Matt?
+(...YES or NO...) yes
+
+Prepare yourself for the greatest match of Connect-Four...
+0 1 2 3 4 5 6
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+| | | | | | | |
+
+Statistics:
+There are: 42 empty cells.
+What column would you like to move to (0-6): 3
+```
+
+## Code Overview
+
+### Board Class
+
+- **Attributes**:
+  - `rows`: Number of rows in the board.
+  - `cols`: Number of columns in the board.
+  - `emptyCells`: Number of empty cells in the board.
+  - `board`: 2D array representing the board.
+
+- **Methods**:
+  - `getRows()`, `getCols()`, `getEmptyCells()`: Accessor methods.
+  - `clearBoard()`: Clears the board.
+  - `printBoard()`: Prints the board.
+  - `placeToken(col, token)`: Places a token in the specified column.
+  - `checkWinner(playerSymbol)`: Checks if there is a winner.
+  - Various helper methods for checking and blocking moves.
+
+### ConnectFour Class
+
+- **Attributes**:
+  - `connectFourBoard`: Instance of the Board class.
+  - `playGame`, `gameLoop`: Boolean variables to control game flow.
+
+- **Methods**:
+  - `main()`: Main game loop.
+  - `makeUserMove(connectFourBoard)`: Prompts the user for a move.
+  - `makeComputerMove(connectFourBoard)`: Generates a computer move.
+  - `askPlayAgain()`: Prompts the user to play again.
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+This project was created by Matthew Moga.
+
+## Contributing
+
+If you would like to contribute to this project, please fork the repository and submit a pull request.

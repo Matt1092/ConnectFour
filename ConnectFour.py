@@ -5,17 +5,23 @@ Date: January 5, 2024
 Description: This class models the Connect Four main loop for our game. All in game moves are found here.
 """
 
-# Import statement to get Board from Board.py
+
+
+
+#Import statement to get Board from Board.py
 from Board import Board
+
+
+
 
 class ConnectFour:
     """
     A class representing the mainline logic of our Connect-Four game.
 
     Attributes:
-        connectFourBoard (char array): The board that will be used for the in-game moves.
-        playGame (bool): Boolean variable used to determine status of the game.
-        gameLoop (bool): Boolean variable used to determine whether the program keeps running or not.
+        connectFourBoard (char array): The board that will be used for the in game moves.
+        playGame (bool): Boolean variable used to determine status of game.
+        gameLoop (bool): Boolean variable used to determine whether program keeps running or not.
     """
     def __init__(self):
         """
@@ -23,33 +29,40 @@ class ConnectFour:
         """
         pass
 
+
+
+
     @staticmethod
     def main():
         """
         This function defines the mainline logic for our game loop. It uses various helper methods to run the game.
         """
+        #Instantiate board
         connectFourBoard = Board()
         print("\nWelcome to Connect-Four!\n")
         playGame = False
         gameLoop = False
-
-        # Prompt user for name
+        #Prompt user for name
         name = input("What is your name? ")
         
-        # Prompt user for yes or no response
+        #Prompt user for yes or no response
         answer = input("\nYou ready for a challenge, " + name + "?\n(...YES or NO...) ")
-        if answer.lower() == "yes" or "yes" in answer.lower():
+        if answer.lower() == "yes" or "yes" in answer:
+            #Start game
             print("\nPrepare yourself for the greatest match of Connect-Four...\n")
             playGame = True
             gameLoop = True
-        elif answer.lower() == "no" or "no" in answer.lower():
+        
+        #Exit game loop
+        elif answer.lower() == ("no") or "no" in answer:
             print("\nUnfortunate. Practice more and then come back...\n")
         else:
             print("\nNot sure what you mean there, " + name + ". Get serious then come back!!!\n")
         
-        while gameLoop:
+        #Mainline logic
+        while (gameLoop):
             playGame = True
-            while playGame:
+            while (playGame):
                 usersTurn = True
                 connectFourBoard.printBoard()
                 print(str(connectFourBoard))
@@ -58,20 +71,30 @@ class ConnectFour:
                     ConnectFour.makeComputerMove(connectFourBoard)
                         
                 usersTurn = not usersTurn
+                #Win scenario
+                if connectFourBoard.checkWinner('X') == True:
+                    print("YOU Won!  Congratulations.\n")
+                    playGame = False
 
-                # Check for win or draw scenarios
-                if ConnectFour.check_winner(connectFourBoard, 'X'):
+                #Lose scenario
+                elif connectFourBoard.checkWinner('O') == True:
+                    print("You LOSE!  Heehee!\n")
                     playGame = False
-                elif ConnectFour.check_winner(connectFourBoard, 'O'):
-                    playGame = False
-                elif connectFourBoard.getEmptyCells() == 0:
-                    print("Tie! Try harder!\n")
-                    playGame = False
+
+                #Draw scenario
+                else:
+                    if connectFourBoard.getEmptyCells() == 0:
+                        print("Tie!  Try harder!\n")
+                        playGame = False
 
             print("*** G A M E   O V E R ***")
             connectFourBoard.printBoard()
             connectFourBoard.clearBoard()
+            #Ask user to play again
             gameLoop = ConnectFour.askPlayAgain()
+                  
+
+
 
     @staticmethod
     def makeUserMove(connectFourBoard):
@@ -82,14 +105,17 @@ class ConnectFour:
             connectFourBoard (char array): Board that is used to place 'X' token on.
         """
         validMove = False
+            
+        #Prompt for a row and column with input validation
         while not validMove:
-            try:
-                col = int(input("What column would you like to move to (0-6): "))
-                validMove = connectFourBoard.placeToken(col, 'X')
-                if not validMove:
-                    print("Sorry, that location is not available to place an 'X'.\n")
-            except ValueError:
-                print("Invalid input. Please enter a number between 0 and 6.")
+            col = int(input("What column would you like to move to (0-6): "))
+            #placeToken() will return false if the col is invalid or the cell is not empty
+            validMove = connectFourBoard.placeToken(col, 'X')
+            if not validMove:
+                print("Sorry, that location is not available to place an 'X'.\n")
+        
+
+
 
     @staticmethod
     def makeComputerMove(connectFourBoard):
@@ -100,42 +126,31 @@ class ConnectFour:
             connectFourBoard (char array): Board that is used to place 'O' token on.
         """
         validMove = False
+        col = -1                
+            
+        #Generate computer move, the column where we find an empty cell to place an 'O'
         while not validMove:
             col = connectFourBoard.computerAttack()
             validMove = connectFourBoard.placeToken(col, 'O')
+        
+
+
 
     @staticmethod
     def askPlayAgain():
         """
         This function prompts the user if they would like to play again with some input validation.
-
-        Returns:
-            bool: True if the user wants to play again, False otherwise.
         """
         playAgain = input("Play again? [y/n]: ")
-        while playAgain not in ("y", "yes", "n", "no"):
+        while (not playAgain == ("y") and not playAgain == ("yes") and not playAgain == ("n") and not playAgain == ("no")):
             playAgain = input("Play again? [y/n]: \n")
-        return playAgain in ("y", "yes")
 
-    @staticmethod
-    def check_winner(connectFourBoard, symbol):
-        """
-        This function checks if the specified player has won.
-
-        Args:
-            connectFourBoard (Board): The game board.
-            symbol (char): The player's symbol ('X' or 'O').
-
-        Returns:
-            bool: True if the player has won, False otherwise.
-        """
-        if connectFourBoard.checkWinner(symbol):
-            if symbol == 'X':
-                print("YOU Won! Congratulations.\n")
-            else:
-                print("You LOSE! Heehee!\n")
+        if ((playAgain == ("y")) or (playAgain == ("yes"))):
             return True
         return False
 
-# Call the main method
+
+
+
+#Call the main method
 ConnectFour.main()

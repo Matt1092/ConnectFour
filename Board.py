@@ -1,3 +1,5 @@
+import random
+
 class Board:
     ROWS = 6
     COLS = 7

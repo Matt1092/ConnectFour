@@ -108,11 +108,17 @@ class ConnectFour:
             
         #Prompt for a row and column with input validation
         while not validMove:
-            col = int(input("What column would you like to move to (0-6): "))
-            #placeToken() will return false if the col is invalid or the cell is not empty
-            validMove = connectFourBoard.placeToken(col, 'X')
-            if not validMove:
-                print("Sorry, that location is not available to place an 'X'.\n")
+            try:
+                col = int(input("What column would you like to move to (0-6): "))
+                if col < 0 or col >= connectFourBoard.getCols():
+                    print("Column out of range. Please enter a number between 0 and 6.")
+                    continue
+                validMove = connectFourBoard.placeToken(col, 'X')
+                if not validMove:
+                    print("Sorry, that location is not available to place an 'X'.\n")
+            except ValueError:
+                print("Invalid input. Please enter a number between 0 and 6.")
+
         
 
 

@@ -9,6 +9,7 @@
 
 
 
+// Necessary import statements
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -17,7 +18,6 @@ import java.util.Scanner;
 
 
 public class ConnectFour {
-    
     /**
      * This method defines the mainline logic for our game loop. 
      * It uses a Connect-Four Board object and various helper methods to run the game.
@@ -130,9 +130,7 @@ public class ConnectFour {
                 }
             }
             if (col == -1) {
-                //col = numberGenerator.nextInt(6);
                 col = connectFourBoardPlayers.computerAttack();
-                //col = numberGenerator.nextInt(6);
             }
             // placeToken() will return false if the cell is not empty (i.e., we need to try a new spot)
             validMove = connectFourBoardPlayers.placeToken(col, 'O');

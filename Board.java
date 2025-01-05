@@ -7,8 +7,6 @@
  */
 
 
-
-
 // Necessary import statements
 import java.util.Arrays;
 import java.util.Random;
@@ -202,7 +200,6 @@ public class Board {
         }
         return -1;
     }
-
 
     
     /**
